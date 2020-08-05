@@ -1,0 +1,61 @@
+html,
+body,
+#root,
+.App {
+  height: 100%;
+}
+
+img {
+  display: block;
+  width: 100%;
+}
+
+h3,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.switch-mode > input[type="checkbox"] {
+  display: none;
+}
+
+.switch-mode > input[type="checkbox"]:checked + .background {
+  background-color: #4cd964;
+  border-color: #4cd964;
+}
+
+.switch-mode > input[type="checkbox"]:checked ~ .mask {
+  left: 27px;
+}
+
+.dark-mode {
+  background: #000;
+  color: #fff;
+}
+
+.dark-mode .paragraph {
+  color: #000 !important;
+}
+
+.dark-mode input:disabled {
+  background: #fff;
+  outline: 0;
+  border: 1px solid #fff;
+}
+
+.dark-mode input:focus {
+  outline-color: #000;
+  border-color: #000;
+}
+
+.dark-mode h2 {
+  color: #13d2f1;
+  text-shadow: 3px 4px 6px #0955ff;
+}
+
+.modal-show {
+  opacity: 0.4;
+  background: #989898;
+  user-select: none !important;
+}
