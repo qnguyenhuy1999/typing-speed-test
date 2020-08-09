@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import {
   Main,
@@ -12,7 +12,7 @@ import {
   ContainerString,
   Input,
   Button,
-} from "./styles";
+} from './styles';
 
 const style = {
   gridColumnStart: 1,
@@ -23,7 +23,7 @@ export default function (props) {
   const {
     countDown,
     paragraphs,
-    yourString,
+    yourAnswers,
     isStart,
     accuracy,
     cpm,
@@ -37,9 +37,9 @@ export default function (props) {
   return (
     <Main>
       <Container>
-        <div className="content">
+        <div className='content'>
           <Title>TYPING SPEED TEST</Title>
-          <Calc className="calc">
+          <Calc className='calc'>
             <Item>
               <SpanTop>{wpm}</SpanTop>
               <SpanBottom>WORDS / MIN</SpanBottom>
@@ -59,20 +59,26 @@ export default function (props) {
           </Calc>
         </div>
       </Container>
-      <ContainerText className="paragraph">{paragraphs}</ContainerText>
+      <ContainerText className='paragraph'>{paragraphs}</ContainerText>
       <Input
-        type="text"
-        name="text"
+        type='text'
+        name='text'
         disabled={!isStart}
-        placeholder="TYPE HERE"
+        placeholder='TYPE HERE TO START'
         ref={inputRef}
         onKeyDown={handleChangeInput}
       />
-      {yourString && (
-        <ContainerString
-          className="paragraph"
-          dangerouslySetInnerHTML={{ __html: yourString }}
-        />
+      {yourAnswers.length > 0 && (
+        <ContainerString className='paragraph'>
+          {yourAnswers.map((item, key) => (
+            <span
+              key={key}
+              style={{ color: item.status === true ? 'green' : 'red' }}
+            >
+              {`${item.text} `}
+            </span>
+          ))}
+        </ContainerString>
       )}
       {isStart ? (
         <Button onClick={endGame}>Retry</Button>

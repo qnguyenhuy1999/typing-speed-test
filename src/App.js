@@ -1,31 +1,49 @@
-import React, { useState, useEffect, useRef } from "react";
-import classNames from "classnames";
-import { paragraph } from "txtgen";
-import "./App.css";
+import React, { useState, useEffect, useRef } from 'react';
+import classNames from 'classnames';
+import { paragraph } from 'txtgen';
+import './App.css';
 
-import Header from "./components/Header";
-import Main from "./components/Main";
-import Modal from "./components/Modal";
+import Header from './components/Header';
+import Main from './components/Main';
+import Modal from './components/Modal';
 
 let interval = null;
+const limitTime = 60;
 
 function App() {
   const inputRef = useRef(null);
+  const yourAnswersRef = useRef([]);
+
   const [darkMode, setDarkMode] = useState(false);
-  const [countDown, setCountDown] = useState(3);
-  const [paragraphs, setParagraph] = useState("");
+  const [countDown, setCountDown] = useState(limitTime);
+  const [paragraphs, setParagraph] = useState('');
   const [accuracy, setAccuracy] = useState(0);
-  const [cpm, setCpm] = useState(0);
-  const [wpm, setWpm] = useState(0);
-  const [yourString, setYourString] = useState("");
-  const [errorString, setErrorString] = useState("");
-  const [correctString, setCorrectString] = useState("");
+  const [cpm, setCpm] = useState(0); // character per minute
+  const [wpm, setWpm] = useState(0); // word per minute
+  const [yourAnswers, setYourAnswers] = useState([]);
   const [isStart, setIsStart] = useState(false);
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
     setParagraph(`${paragraph()} ${paragraph()} ${paragraph()}`);
   }, []);
+
+  useEffect(() => {
+    if (countDown !== limitTime) {
+      let correctAnswer = yourAnswersRef.current.filter(
+        (i) => i.status === true
+      );
+      const timeRemains = limitTime - countDown;
+      const _wpm = Math.round((correctAnswer.length / timeRemains) * 100);
+      const totalCharacter = correctAnswer.reduce((a, b) => {
+        return a + b.text.length;
+      }, 0);
+      const _cpm = Math.round((totalCharacter / timeRemains) * 100);
+
+      setCpm(_cpm);
+      setWpm(_wpm);
+    }
+  }, [countDown]);
 
   const startGame = () => {
     setIsStart(true);
@@ -46,58 +64,59 @@ function App() {
     setModal(true);
     setIsStart(false);
     clearInterval(interval);
-    setCountDown(60);
+    setCountDown(limitTime);
     setParagraph(`${paragraph()} ${paragraph()} ${paragraph()}`);
-    setYourString("");
-    inputRef.current.value = "";
+    setYourAnswers([]);
+    yourAnswersRef.current = [];
+    inputRef.current.value = '';
   };
 
   const handleChangeInput = (e) => {
     if (isStart) {
-      if (e.key === " ") {
+      console.log(e.keyCode);
+      if (e.keyCode === 32 || e.key === ' ') {
         let text = inputRef.current.value.trim();
-        let firstWord = paragraphs.split(" ")[0];
-
+        let firstWord = paragraphs.split(' ')[0];
+        let answer = {
+          text: firstWord,
+          status: false,
+        };
         if (text === firstWord) {
-          setYourString(
-            yourString + `<span style="color: green">${text} </span>`
-          );
-          setCorrectString(correctString + text);
-        } else {
-          setYourString(
-            yourString + `<span style="color: red">${text} </span>`
-          );
-          setErrorString(errorString + text);
+          answer.status = true;
         }
 
-        setParagraph(paragraphs.split(" ").slice(1).join(" "));
-        inputRef.current.value = "";
-
-        const timeRemains = ((60 - countDown) / 60).toFixed(2);
-        const _accuracy = Math.floor(
-          ((yourString.length - errorString.length) / yourString.length) * 100
+        yourAnswersRef.current = [...yourAnswers, answer];
+        setYourAnswers(yourAnswersRef.current); // add new value input of user
+        let correctAnswer = yourAnswersRef.current.filter(
+          (i) => i.status === true
         );
-        const _wpm = Math.round(correctString.length / 5 / timeRemains);
+
+        setParagraph(paragraphs.split(' ').slice(1).join(' '));
+        inputRef.current.value = '';
+
+        const _accuracy = Math.round(
+          (correctAnswer.length / yourAnswersRef.current.length) * 100
+        );
         setAccuracy(_accuracy);
-        setCpm(correctString.length);
-        setWpm(_wpm);
       }
     }
   };
 
   const onClose = () => {
-    setModal(false);
-    setWpm(0);
-    setCpm(0);
-    setAccuracy(0);
+    if (modal === true) {
+      setModal(false);
+      setWpm(0);
+      setCpm(0);
+      setAccuracy(0);
+    }
   };
 
   return (
     <>
       <div
-        className={classNames("App", {
-          "dark-mode": darkMode,
-          "modal-show": modal,
+        className={classNames('App', {
+          'dark-mode': darkMode,
+          'modal-show': modal,
         })}
         onClick={onClose}
       >
@@ -105,7 +124,7 @@ function App() {
         <Main
           countDown={countDown}
           paragraphs={paragraphs}
-          yourString={yourString}
+          yourAnswers={yourAnswers}
           isStart={isStart}
           accuracy={accuracy}
           cpm={cpm}
