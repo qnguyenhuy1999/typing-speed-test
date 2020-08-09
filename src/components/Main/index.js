@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import classNames from "classnames";
 
 import {
   Main,
@@ -12,7 +13,7 @@ import {
   ContainerString,
   Input,
   Button,
-} from './styles';
+} from "./styles";
 
 const style = {
   gridColumnStart: 1,
@@ -21,6 +22,7 @@ const style = {
 
 export default function (props) {
   const {
+    darkMode,
     countDown,
     paragraphs,
     yourAnswers,
@@ -35,11 +37,11 @@ export default function (props) {
   } = props;
 
   return (
-    <Main>
+    <Main className={classNames("main", { dark: darkMode })}>
       <Container>
-        <div className='content'>
+        <div className="content">
           <Title>TYPING SPEED TEST</Title>
-          <Calc className='calc'>
+          <Calc className="calc">
             <Item>
               <SpanTop>{wpm}</SpanTop>
               <SpanBottom>WORDS / MIN</SpanBottom>
@@ -59,21 +61,21 @@ export default function (props) {
           </Calc>
         </div>
       </Container>
-      <ContainerText className='paragraph'>{paragraphs}</ContainerText>
+      <ContainerText className="paragraph">{paragraphs}</ContainerText>
       <Input
-        type='text'
-        name='text'
+        type="text"
+        name="text"
         disabled={!isStart}
-        placeholder='TYPE HERE TO START'
+        placeholder="TYPE HERE TO START"
         ref={inputRef}
         onKeyDown={handleChangeInput}
       />
       {yourAnswers.length > 0 && (
-        <ContainerString className='paragraph'>
+        <ContainerString className="paragraph">
           {yourAnswers.map((item, key) => (
             <span
               key={key}
-              style={{ color: item.status === true ? 'green' : 'red' }}
+              style={{ color: item.status === true ? "green" : "red" }}
             >
               {`${item.text} `}
             </span>

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Container, Background, Mask } from "./styles";
+import { Container, Background, Mask, Moon, Sun } from "./styles";
 
 export default function (props) {
   const { darkMode, setDarkMode } = props;
@@ -25,6 +25,9 @@ export default function (props) {
         <Background className="background" />
 
         <Mask className="mask" />
+
+        <Sun className="fas fa-sun" />
+        <Moon className="fas fa-moon"></Moon>
       </Container>
     </>
   );

@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import classNames from 'classnames';
-import { paragraph } from 'txtgen';
-import './App.css';
+import React, { useState, useEffect, useRef } from "react";
+import classNames from "classnames";
+import { paragraph } from "txtgen";
+import "./App.css";
 
-import Header from './components/Header';
-import Main from './components/Main';
-import Modal from './components/Modal';
+import Header from "./components/Header";
+import Main from "./components/Main";
+import Modal from "./components/Modal";
 
 let interval = null;
 const limitTime = 60;
@@ -16,7 +16,7 @@ function App() {
 
   const [darkMode, setDarkMode] = useState(false);
   const [countDown, setCountDown] = useState(limitTime);
-  const [paragraphs, setParagraph] = useState('');
+  const [paragraphs, setParagraph] = useState("");
   const [accuracy, setAccuracy] = useState(0);
   const [cpm, setCpm] = useState(0); // character per minute
   const [wpm, setWpm] = useState(0); // word per minute
@@ -68,15 +68,15 @@ function App() {
     setParagraph(`${paragraph()} ${paragraph()} ${paragraph()}`);
     setYourAnswers([]);
     yourAnswersRef.current = [];
-    inputRef.current.value = '';
+    inputRef.current.value = "";
   };
 
   const handleChangeInput = (e) => {
     if (isStart) {
       console.log(e.keyCode);
-      if (e.keyCode === 32 || e.key === ' ') {
+      if (e.keyCode === 32 || e.key === " ") {
         let text = inputRef.current.value.trim();
-        let firstWord = paragraphs.split(' ')[0];
+        let firstWord = paragraphs.split(" ")[0];
         let answer = {
           text: firstWord,
           status: false,
@@ -91,8 +91,8 @@ function App() {
           (i) => i.status === true
         );
 
-        setParagraph(paragraphs.split(' ').slice(1).join(' '));
-        inputRef.current.value = '';
+        setParagraph(paragraphs.split(" ").slice(1).join(" "));
+        inputRef.current.value = "";
 
         const _accuracy = Math.round(
           (correctAnswer.length / yourAnswersRef.current.length) * 100
@@ -114,14 +114,15 @@ function App() {
   return (
     <>
       <div
-        className={classNames('App', {
-          'dark-mode': darkMode,
-          'modal-show': modal,
+        className={classNames("App", {
+          "dark-mode": darkMode,
+          "modal-show": modal,
         })}
         onClick={onClose}
       >
         <Header darkMode={darkMode} setDarkMode={setDarkMode} />
         <Main
+          darkMode={darkMode}
           countDown={countDown}
           paragraphs={paragraphs}
           yourAnswers={yourAnswers}
