@@ -5,7 +5,7 @@ export const Main = styled.div`
   margin: 40px auto;
   background: #8e8e8e14;
   padding: 2%;
-  box-shadow: 0 0px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: -6px 6px 6px rgba(0, 0, 0, 0.2);
   border-radius: 0.25rem;
 `;
 

@@ -21,12 +21,12 @@ p {
 }
 
 .switch-mode > input[type="checkbox"]:checked + .background {
-  background-color: #4cd964;
-  border-color: #4cd964;
+  background-color: #440080;
+  border-color: #440080;
 }
 
 .switch-mode > input[type="checkbox"]:checked ~ .mask {
-  left: 27px;
+  left: 42px;
 }
 
 .dark-mode {
@@ -58,4 +58,9 @@ p {
   opacity: 0.4;
   background: #989898;
   user-select: none !important;
+}
+
+.main.dark {
+  background: #111 !important;
+  box-shadow: -4px 6px 6px #635f5f !important;
 }
